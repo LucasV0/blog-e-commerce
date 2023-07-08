@@ -1,0 +1,51 @@
+
+    
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.5;
+        background-color: #f2f2f2;
+    }
+    #hero {
+        background-image: url(hero_image.jpg);
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .hero-content {
+        text-align: center;
+    }
+
+    #about {
+        padding: 50px 0;
+        background-color: #fff;
+    }
+    h2 {
+        margin-bottom: 20px;
+    }
+    #team {
+        background-color: #f2f2f2;
+        padding: 50px 0;
+    }
+
+    .team-member {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .team-member img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    ul.objectives-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    ul.objectives-list li {
+        margin-bottom: 10px;
+    }

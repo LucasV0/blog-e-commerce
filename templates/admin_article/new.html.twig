@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Creation d'article{% endblock %}
+
+{% block body %}
+    <h1>Creation d'article</h1>
+
+    {{ include('admin_article/_form.html.twig') }}
+
+
+    
+    <a href="{{ path('app_admin_article_index') }}">Retour</a>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/homeIndex.css') }}">
+{% endblock %}
+
+{% block body %}
+
+
+<section id="latest-articles">
+    <div class="container">
+        <h2>Les 3 articles les plus récents</h2>
+        <br>
+        <div class="row">
+            {% for article in latestArticles %}
+            <div class="col-md-4">
+                <div class="card mb-4 card-custom" style="max-width: 500px;">
+                    {% if article.imageName %}
+                    <img src="/images/article/{{ article.imageName }}" alt="card-img-top" style="width: 100%; height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="card-title">{{ article.title }}</h3>
+                        {% include "like/index.html.twig" with {'article': article} %}
+                        {% set trimmedContent = article.content|slice(0, article.content|length > 200 ? 200 : article.content|length)|striptags|replace({"&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": "\"", "&#39;": "'"}) %}
+                        {% if article.content|length > 200 %}
+                        <p class="card-text">{{ trimmedContent ~ '...' }}</p>
+                        {% else %}
+                        <p class="card-text">{{ article.content }}</p>
+                        {% endif %}
+                        <div class="mt-auto">
+                            <a href="{{ path('article.show', {'id': article.id}) }}" class="btn btn-dark btn-sm voir-plus">Lire plus</a>
+                            <div class="flex w-fit" style="margin-top: 8px;">
+                                {% if app.user %}
+                                <a href="#" class="like-button" data-article-id="{{ article.id }}" data-like-action="{{ path('like.article', {'id': article.id}) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon unfilled align-middle {{ app.user in article.likes ? 'hidden' : '' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                                    </svg>
+                                    <span class="ml-2 like-count" id="like-count-{{ article.id }}">{{ article.likes|length }} J'aime</span>
+                                </a>
+                                {% else %}
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon unfilled align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                                    </svg>
+                                    <span class="ml-2 like-count" id="like-count-{{ article.id }}">{{ article.likes|length }} J'aime</span>
+                                </div>               
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <a href="{{ path ("app_article")}}" class="allArt">Voir tous les articles</a>
+
+</section>
+
+
+<section id="hero">
+    <div class="hero-content">
+        
+        <h1>A PROPOS DE NOUS</h1>
+        <br>
+        <div class="abc">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias iusto officia molestiae quia corrupti suscipit, qui excepturi ab illo totam repudiandae veniam? Eligendi sequi eius, earum eaque quae tenetur vitae?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod modi eligendi nam! Rerum dolor ab optio tempore dolorum quasi dicta dignissimos, et, deleniti esse quos accusantium. Sit rerum corporis quibusdam.lorem Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae ratione, laboriosam voluptate dicta cumque incidunt nemo iusto atque, itaque quasi suscipit! Quasi doloribus quis culpa corrupti, aut quibusdam illum officiis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime obcaecati quas eum dolore voluptatum corporis adipisci in consectetur, ipsum accusantium veniam ea quam est amet aliquid facere repellat beatae. Inventore?</p>
+    <br>
+      </div>
+</div>
+</section>
+<br>
+<section class="py-5 border-bottom" id="features">
+    <div class="container px-5 my-5">
+        <div class="table">
+            <div class="table-cell">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"></div>
+                <h2 class="h4 fw-bolder">OBJECTIFS</h2>
+                <br>
+                <ul class="objectives-list">
+                    <li>Partager des connaissances</li>
+                    <li>Établir notre expertise</li>
+                    <li>Inspirer et motiver</li>
+                    <li>Interagir avec une communauté</li>
+                    <li>Accroître notre visibilité en ligne </li>
+                    <li>Partager des expériences personnelles</li>
+                    <li>Promouvoir nos produit ou nos service</li>
+                    <li>Promouvoir un produit ou un service</li>
+                </ul>
+                
+                <a class="text-decoration-none" href="#!">
+                    Call to action
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div class="table-cell">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"></i></div>
+                <h2 class="h4 fw-bolder">PROJET</h2>
+                <br>
+                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis eum nemo rem quidem, explicabo neque libero asperiores, qui vel doloribus atque corrupti, at soluta voluptas tempora id architecto illo! Ex.</p>
+                <a class="text-decoration-none" href="#!">
+                    Call to action
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div class="table-cell">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"></i></div>
+                <h2 class="h4 fw-bolder">?????????????</h2>
+                <br>
+                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                <a class="text-decoration-none" href="#!">
+                    Call to action
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+
+        $('.voir-plus').on('click', function(event) {
+            event.preventDefault();
+            {% if not app.user %}
+            alert('Vous devez vous connecter');
+            {% else %}
+            window.location.href = $(this).attr('href');
+            {% endif %}
+        });
+    
+</script>
+
+{% endblock %}

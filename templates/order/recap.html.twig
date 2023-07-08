@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+
+    .btn
+    {
+        background-color: white;
+    }
+</style>
+<br>
+  <h1>Méthode de paiement</h1>
+<br>
+  {% if method == 'stripe' %}
+    <form method="POST" action="{{ path('payment_stripe', {reference: reference}) }}">
+      <button class="btn" type="submit" style="border-radius: 6px; position:relative; top: 20px; font-size: 12px; padding: 4px 8px;">
+        <img src="{{ asset('asset/stripe.jpg') }}" alt="Stripe" style="width: 200px; height: 70px;" />
+      </button>
+      <button class="btn" type="submit" style="border-radius: 6px; position:relative; top: 20px; font-size: 12px; padding: 4px 8px;">
+        <img src="{{ asset('asset/pp.jpg') }}" alt="Stripe" style="width: 210px; height: 70px;" />
+      </button>
+      
+    </form>
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+{% endblock %}

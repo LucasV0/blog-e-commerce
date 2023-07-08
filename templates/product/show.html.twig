@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   {{ product.title }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/productShow.css') }}">
+{% endblock %}
+
+{% block body %}
+   <div class="container mt-4">
+      <ul class="breadcrumb">
+         <li><a href="{{ path('app_home') }}">Accueil</a></li>
+         <li><a href="{{ path('app_product_index') }}">Nos produits</a></li>
+         <li><a href="{{ path('app_product_admin_index') }}">{{ product.title }}</a></li>
+      </ul>
+      <h1>{{ product.title }}</h1>
+      <div class="row">
+         <div class="col-md-8"></div>
+         <div>
+            <p>{{ product.content|raw }}</p>
+         </div>
+      </div>
+      
+
+     
+      {% if is_granted('ROLE_USER') %}
+      <a href="{{ path('cart_add', {id: product.id}) }}" class="btn btn-dark btn-sm">Ajouter au panier</a>
+   {% else %}
+      <p>Connectez-vous pour pouvoir ajouter cet article au panier.</p>
+   {% endif %}
+
+
+   </div>
+{% endblock %}

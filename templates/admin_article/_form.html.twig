@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    {% if article.imageName %}
+        <img src="/images/article/{{ article.imageName }}" alt="card-img-top">
+    {% endif %}
+    <button class="btn btn-info">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

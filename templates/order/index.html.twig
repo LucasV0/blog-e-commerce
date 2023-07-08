@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrderController!{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block body %}
+<section>
+    <div class="col-lg-5 offset-lg-3 pt-1">
+    <h2 class="pb-2 pt-md-2 my-4 mt-lg-5">Détail de la commande <span class="fs-base fw-normal text-muted">({{ recapCart|length }} produits)</span></h2>
+    {% set total = null %}
+    {% for product in recapCart %}
+    
+        {% set total = total + (product.product.price * product.quantity) %}
+        
+        <div class="d-sm-flex align-items-center border-top py-4">
+            <div class="w-100 pt-1 ps-sm-4 text-center">
+                <div class="d-block">
+                    <div class="product-title"><strong>{{ product.product.title }}</strong></div>
+                </div>
+                <div class="me-3" style="position: relative; top:15px;">
+                    <p><strong>Contenu du produit</strong> : {{ product.product.content }}</p>
+
+                </div>
+                <br>
+                <div>
+                    <p class="mb-2"><strong>Quantité :</strong> {{ product.quantity }} </p>
+                </div>
+            </div>
+            <div class="product">
+                <div class="product-image"></div>
+                <div class="product-details">
+                    <div class="nav justify-content-end mt-n4">
+                        <a class="remove-link" href="{{ path('cart_remove', { id: product.product.id })}}" data-bs-toggle="tooltip" title="remove">
+                            <i class="ai-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="total">
+        Total: <span class="fs-3 fw-semibold text-dark ms-2">{{ total}} €</span>
+    </div>
+    <div class="text-center validate-button">
+        <form action="{{ path('order_prepare') }}" method="POST">
+            <button type="submit" class="btn btn-lg btn-primary" style="border-radius: 6px; position:relative; top:20px;">Valider votre commande</button>
+        </form>
+        
+    </div>
+    </div>
+    </section>
+    
+{% endblock %}

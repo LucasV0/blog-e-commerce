@@ -1,19 +1,102 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
+    {% block stylesheets %}
+
+    {% endblock %}
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md {% if app.request.attributes.get('_route') in ['app_register', 'app_login'] %}d-none{% endif %}">
+        <div class="container">
+            <button class="navbar-toggler d-none" data-toggle="collapse" data-target="#navcol-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav w-100 justify-content-between">
+                    
+                    <li class="nav-item dropdown">
+                        <a class="toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="{{ path('app_home') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="{{ path('app_article') }}">Article</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="toggle nav-link" data-toggle="dropdown" data-display="static" aria-expanded="false" href="{{ path('app_product_index') }}">Nos produits</a>
+                    </li>
+                    {# <li class="nav-item dropdown">
+                        <a class="toggle nav-link" data-toggle="dropdown" data-display="static" aria-expanded="false" href="{{ path('app_about_us') }}">A propos</a>
+                    </li> #}
+                    {% if not app.user %}
+                    
+                        <li class="nav-item dropdown">
+                            <a class="toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="{{ path('app_login') }}">Connexion</a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ path('app_admin_article_index') }}">Article</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_admin_user_index') }}">Utilisateur</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_product_admin_index') }}">Produits</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_USER') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="toggle nav-link" data-toggle="dropdown" data-display="static" aria-expanded="false" href="{{ path('cart_index') }}">Mon panier</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% if app.request.attributes.get('_route') == 'app_home' %}
+    <header class="bg-dark py-5 mt-0">
+        <div class="container px-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center my-5">
+                        <h1 class="display-5 fw-bolder text-white mb-2">Ocealys GROUPE</h1>
+                        <p class="lead text-white-50 mb-4">un blog dédié à l'exploration des rêves, à l'émancipation de l'esprit et à la quête de liberté. Plongez dans l'univers envoûtant de cette pratique millénaire, mêlant l'art du vol avec l'énergie intérieure</p>
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% endif %}
+    
+    
+    <div class="text-center mt-4">
         {% block body %}{% endblock %}
-    </body>
+    </div>
+    {% if app.request.attributes.get('_route') not in ['app_register', 'app_login', 'app_admin_user_index', 'app_admin_article_index', 'app_product_admin_index', 'app_product_admin_new', 'app_product_admin_show','app_product_admin_edit', 'app_admin_article_new', 'app_admin_article_show', 'app_admin_article_edit', 'cart_index', 'cart_add','order_create','order_prepare'] %}
+    
+    </section>
+    <footer class="bg-light text-center text-lg-start">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2023 Ocealys Groupe
+          <a class="text-dark" href="https://mdbootstrap.com/"> Ocealys Groupe</a>
+        </div>
+    </footer>
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

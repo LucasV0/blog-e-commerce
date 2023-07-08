@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/adminArticleIndex.css') }}">
+{% endblock %}
+
+{% block body %}
+
+
+<h1>Liste des articles</h1>
+<a href="{{ path('app_admin_article_new') }}">
+    <button class="btn btn-success">Creation article</button>
+  </a>
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Contenu</th>
+                <th>Date</th>
+                <th class="actions-column">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.id }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.content|slice(0, 500) }}</td>
+
+                <td>{{ article.date ? article.date|date('Y-m-d') : '' }}</td>
+                <td>
+                    <form method="post" action="{{ path('app_admin_article_edit', {'id': article.id}) }}" >
+                        <input type="hidden" name="_method" value="edit">
+                        <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ article.id) }}">
+                        <button class="btn btn-primary" >Modifier</button>
+                    </form>
+                    <form method="post" action="{{ path('app_admin_article_delete', {'id': article.id}) }}" onsubmit='return confirm("Voulez-vous vraiment supprimer cet utilisateur ?")'>
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                        <button class="btn btn-danger" onclick="delLesson({{ article.id }})">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+{% endblock %}

@@ -11,8 +11,14 @@
         "doctrine/doctrine-bundle": "^2.9",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.15",
+        "friendsofsymfony/ckeditor-bundle": "^2.4",
+        "knplabs/knp-paginator-bundle": "^6.2",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.21",
+        "scheb/2fa-bundle": "^6.8",
+        "scheb/2fa-email": "^6.8",
+        "sensio/framework-extra-bundle": "^6.2",
+        "stripe/stripe-php": "^10.14",
         "symfony/asset": "6.2.*",
         "symfony/console": "6.2.*",
         "symfony/doctrine-messenger": "6.2.*",
@@ -39,8 +45,12 @@
         "symfony/validator": "6.2.*",
         "symfony/web-link": "6.2.*",
         "symfony/yaml": "6.2.*",
+        "symfonycasts/reset-password-bundle": "^1.17",
+        "symfonycasts/verify-email-bundle": "^1.13",
+        "tinymce/tinymce": "*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "vich/uploader-bundle": "^2.1"
     },
     "config": {
         "allow-plugins": {
@@ -69,18 +79,7 @@
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php81": "*"
     },
-    "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
-    },
+
     "conflict": {
         "symfony/symfony": "*"
     },

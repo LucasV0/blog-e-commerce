@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticleController!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/articleLike.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <h1>Les articles</h1>
+    <div class="row">
+        {% for article in articles %}
+        <div class="col-md-4">
+            <div class="card mb-4 card-custom" style="max-width: 500px;">
+                {% if article.imageName %}
+                <img src="/images/article/{{ article.imageName }}" alt="card-img-top" style="width: 100%; height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h3 class="card-title">{{ article.title }}</h3>
+                    {% include "like/index.html.twig" with {'article': article} %}
+                    {% set trimmedContent = article.content|slice(0, article.content|length > 200 ? 200 : article.content|length)|striptags|replace({"&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": "\"", "&#39;": "'"}) %}
+                    {% if article.content|length > 200 %}
+                    <p class="card-text">{{ trimmedContent ~ '...' }}</p>
+                    {% else %}
+                    <p class="card-text">{{ article.content }}</p>
+                    {% endif %}
+                    <div class="mt-auto">
+                        <a href="{{ path('article.show', {'id': article.id}) }}" class="btn btn-dark btn-sm voir-plus">Lire plus</a>
+                        <div class="flex w-fit" style="margin-top: 8px;">
+                            {% if app.user %}
+                            <a href="#" class="like-button" data-article-id="{{ article.id }}" data-like-action="{{ path('like.article', {'id': article.id}) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon unfilled align-middle {{ app.user in article.likes ? 'hidden' : '' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                                </svg>
+                                <span class="ml-2 like-count" id="like-count-{{ article.id }}">{{ article.likes|length }} J'aime</span>
+                            </a>
+                            {% else %}
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon unfilled align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                                </svg>
+                                <span class="ml-2 like-count" id="like-count-{{ article.id }}">{{ article.likes|length }} J'aime</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Gestionnaire d'événements pour le bouton "J'aime"
+        $(document).on('click', '.like-button', function(event) {
+            event.preventDefault();
+            var articleId = $(this).data('article-id');
+            var likeCountSpan = $('#like-count-' + articleId);
+    
+            // Envoie de la requête AJAX
+            $.ajax({
+                url: $(this).data('like-action').replace('__articleId__', articleId),
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    likeCountSpan.text(response.likeCount + ' J\'aime');
+                }
+            });
+        });
+
+        $('.voir-plus').on('click', function(event) {
+            event.preventDefault();
+            {% if not app.user %}
+            alert('Vous devez vous connecter');
+            {% else %}
+            window.location.href = $(this).attr('href');
+            {% endif %}
+        });
+    });
+</script>
+
+
+
+
+{% endblock %}
